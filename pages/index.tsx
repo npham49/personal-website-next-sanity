@@ -5,10 +5,11 @@ import styles from '@/styles/Home.module.css'
 import {client} from '../lib/client'
 import { PageData } from '@/interface'
 import Hero from '@/components/Hero'
+import Experience from '@/components/Experience'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({pages}: {pages: PageData[]}) {
+export default function Home({pages,experiences}: {pages: PageData[],experiences: any[]}) {
   return (
     <>
       <Head>
@@ -19,18 +20,20 @@ export default function Home({pages}: {pages: PageData[]}) {
       </Head>
       <main>
         <Hero data={pages.find((item)=>item.title==="Hero")}/>
+        <Experience data={experiences}/>
       </main>
     </>
   )
 }
 
 export const getStaticProps = async () => {
-  const query = `*[_type == "page"]`
-  const pages = await client.fetch(query)
-  console.log(pages)
+  const pages = await client.fetch(`*[_type == "page"]`)
+  const experiences = await client.fetch(`*[_type == "experience"]`)
+  console.log(experiences)
   return {
     props: {
       pages,
+      experiences
     }
 }
 }
